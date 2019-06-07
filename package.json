@@ -1,0 +1,42 @@
+{
+  "name": "wedding-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "cross-env ENVIRONMENT=testing jest --watch --verbose",
+    "start": "node index.js",
+    "server": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nevets615/wedding-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nevets615/wedding-backend/issues"
+  },
+  "homepage": "https://github.com/nevets615/wedding-backend#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "bcrypt": "^3.0.6",
+    "bcryptjs": "^2.4.3",
+    "cross-env": "^5.2.0",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "helmet": "^3.18.0",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.17.2",
+    "morgan": "^1.9.1",
+    "pg": "^7.11.0",
+    "sqlite3": "^4.0.8"
+  },
+  "devDependencies": {
+    "jest": "^24.8.0",
+    "nodemon": "^1.19.1",
+    "supertest": "^4.0.2",
+    "verbose": "^0.2.3"
+  }
+}
