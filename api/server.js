@@ -43,9 +43,7 @@ server.post("/register", (req, res) => {
 });
 
 async function addUserPerson(user) {
-  const paul = await db("users").insert(user);
-
-  return `New Person Added: ${user.username}`;
+  return await db("users").insert(user);
 }
 
 //---------------------------------------------------
