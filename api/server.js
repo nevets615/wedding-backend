@@ -36,7 +36,7 @@ server.post("/register", (req, res) => {
       res.status(201).json(saved);
     })
     .catch(error => {
-      res.status(501).json({ message: "Registration Error!!!" });
+      res.status(501).json({ message: `Registration Error!!!${error}` });
     });
   console.log(userInfo.username);
   console.log(userInfo.password);
