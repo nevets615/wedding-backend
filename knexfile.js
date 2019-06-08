@@ -1,18 +1,14 @@
 require("dotenv").config();
+const pg = require("pg");
+pg.defaults.ssl = true;
 
-const localPg = {
-  host: process.env.Host,
-  database: process.env.Database,
-  port: process.env.Port,
-  user: process.env.User,
-  password: process.env.Password || ""
-};
+
 
 //const dbConnection = process.env.DATABASE_URL || localPg;
 
 const dbSettings = {
   client: "pg",
-  connection: localPg,
+  connection: process.env.DATABASE_URL,
   pool: {
     min: 2,
     max: 10
