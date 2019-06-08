@@ -21,7 +21,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 server.get("/", (req, res) => {
-  res.status(201).json("just a test");
+  res.status(201).json("something cool");
 });
 
 //----------------------------------------------------
