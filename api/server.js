@@ -133,7 +133,7 @@ function authenticate2(req, res, next) {
 
 //-----------------------------------------------
 
-server.get("users/${id}/guests", (req, res) => {
+server.get(`users/${id}/guests`, (req, res) => {
   console.log("starting to get guests");
   retrieve()
     .then(guest => {
