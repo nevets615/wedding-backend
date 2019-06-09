@@ -1,18 +1,12 @@
 require("dotenv").config();
-
-const localPg = {
-  host: process.env.Host,
-  database: process.env.Database,
-  port: process.env.Port,
-  user: process.env.User,
-  password: process.env.Password || ""
-};
+const pg = require("pg");
+pg.defaults.ssl = true;
 
 //const dbConnection = process.env.DATABASE_URL || localPg;
 
 const dbSettings = {
   client: "pg",
-  connection: localPg,
+  connection: process.env.DATABASE_URL,
   pool: {
     min: 2,
     max: 10
@@ -47,7 +41,7 @@ module.exports = {
   testing: {
     client: "sqlite3",
     connection: {
-      filename: "./database/test.db3"
+      filename: "./data/test.db3"
     },
     useNullAsDefault: true,
 
@@ -59,4 +53,3 @@ module.exports = {
     }
   }
 };
-

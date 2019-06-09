@@ -34,12 +34,12 @@ server.post("/register", (req, res) => {
   addUserPerson(userInfo)
     .then(saved => {
       res.status(201).json(saved);
+      console.log(userInfo.username);
+      console.log(userInfo.password);
     })
     .catch(error => {
       res.status(501).json({ message: `Registration Error!!! ${error}` });
     });
-  console.log(userInfo.username);
-  console.log(userInfo.password);
 });
 
 async function addUserPerson(user) {
