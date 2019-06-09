@@ -133,9 +133,9 @@ function authenticate2(req, res, next) {
 
 //-----------------------------------------------
 
-server.get("/guests", (req, res) => {
+server.get("users/${id}/guests", (req, res) => {
   console.log("starting to get guests");
-  blah()
+  retrieve()
     .then(guest => {
       res.status(200).json(guest);
     })
@@ -144,8 +144,8 @@ server.get("/guests", (req, res) => {
     });
 });
 
-function blah() {
-  console.log("totes gonna find an guest");
+function retrieve() {
+  console.log("find guest");
   return db("guests").select(
     "id",
     "names",
@@ -160,7 +160,7 @@ function blah() {
 //-----------------------------------------------
 
 server.post("/addguest", authenticate2, (req, res) => {
-  console.log("we gonna try to add an guest");
+  console.log("req.body");
   let post = req.body;
 
   addPost(post)
@@ -176,19 +176,19 @@ async function addPost(post) {
   console.log("before");
   const sally = await db("guests").insert(post);
   console.log("after");
-  return `New Post ID: ${post.guestname} : Added :)`;
+  return `New Post ID: ${post.names} : Added :)`;
 }
 
 //-----------------------------------------------
 
 server.delete("/deleteguest/:id", authenticate2, (rec, rez) => {
-  let thingtodie = rec.params.id;
+  let deleted = rec.params.id;
 
   db("guests")
-    .where({ id: thingtodie })
+    .where({ id: deleted })
     .del()
-    .then(itsdead => {
-      if (!itsdead) {
+    .then(gone => {
+      if (!gone) {
         rez.send("Nope... that does not exist...");
       } else {
         rez
