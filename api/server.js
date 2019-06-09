@@ -133,34 +133,34 @@ function authenticate2(req, res, next) {
 
 //-----------------------------------------------
 
-server.get("/events", (req, res) => {
-  console.log("starting to get events");
+server.get("/guests", (req, res) => {
+  console.log("starting to get guests");
   blah()
-    .then(event => {
-      res.status(200).json(event);
+    .then(guest => {
+      res.status(200).json(guest);
     })
     .catch(err => {
-      res.status(500).json({ error: "The event could not be retrieved." });
+      res.status(500).json({ error: "The guest could not be retrieved." });
     });
 });
 
 function blah() {
-  console.log("totes gonna find an event");
-  return db("events").select(
+  console.log("totes gonna find an guest");
+  return db("guests").select(
     "id",
-    "eventname",
-    "date",
-    "description",
-    "location",
-    "theme",
-    "vendors"
+    "name",
+    "email",
+    "phone_number",
+    "number_of_guest",
+    "number_of_rooms",
+    "dates_staying"
   );
 }
 
 //-----------------------------------------------
 
-server.post("/addevent", authenticate2, (req, res) => {
-  console.log("we gonna try to add an event");
+server.post("/addguest", authenticate2, (req, res) => {
+  console.log("we gonna try to add an guest");
   let post = req.body;
 
   addPost(post)
@@ -174,17 +174,17 @@ server.post("/addevent", authenticate2, (req, res) => {
 
 async function addPost(post) {
   console.log("before");
-  const sally = await db("events").insert(post);
+  const sally = await db("guests").insert(post);
   console.log("after");
-  return `New Post ID: ${post.eventname} : Added :)`;
+  return `New Post ID: ${post.guestname} : Added :)`;
 }
 
 //-----------------------------------------------
 
-server.delete("/deleteevent/:id", authenticate2, (rec, rez) => {
+server.delete("/deleteguest/:id", authenticate2, (rec, rez) => {
   let thingtodie = rec.params.id;
 
-  db("events")
+  db("guests")
     .where({ id: thingtodie })
     .del()
     .then(itsdead => {
@@ -205,15 +205,15 @@ server.delete("/deleteevent/:id", authenticate2, (rec, rez) => {
 
 //-----------------------------------------------
 
-server.put("/updateevent/:id", authenticate2, (reck, rez) => {
+server.put("/updateguest/:id", authenticate2, (reck, rez) => {
   let updoot = reck.params.id;
 
-  db("events")
+  db("guests")
     .where({ id: updoot })
     .update(reck.body)
     .then(newlook => {
       if (newlook > 0) {
-        db("events")
+        db("guests")
           .where({ id: reck.params.id })
           .then(things => {
             rez.status(201).json({ message: "you have successfully updooted" });
