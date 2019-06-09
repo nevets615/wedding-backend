@@ -151,7 +151,7 @@ function blah() {
     "names",
     "email",
     "phone_number",
-    "number_of_guest",
+    "number_of_guests",
     "number_of_rooms",
     "dates_staying"
   );
