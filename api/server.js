@@ -168,7 +168,7 @@ server.post("/addguest", authenticate2, (req, res) => {
       res.status(201).json(saved);
     })
     .catch(error => {
-      res.status(503).json({ message: "Something is wrong... somewhere..." });
+      res.status(503).json({ message: `Something is wrong... somewhere...${error}` });
     });
 });
 
