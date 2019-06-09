@@ -148,7 +148,7 @@ function blah() {
   console.log("totes gonna find an guest");
   return db("guests").select(
     "id",
-    "name",
+    "names",
     "email",
     "phone_number",
     "number_of_guest",
