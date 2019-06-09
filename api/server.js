@@ -21,7 +21,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 server.get("/", (req, res) => {
-  res.status(201).json("something cool");
+  res.status(201).json("just a test");
 });
 
 //----------------------------------------------------
@@ -36,14 +36,16 @@ server.post("/register", (req, res) => {
       res.status(201).json(saved);
     })
     .catch(error => {
-      res.status(501).json({ message: `Registration Error!!!${error}` });
+      res.status(501).json({ message: "Registration Error!!!" });
     });
   console.log(userInfo.username);
   console.log(userInfo.password);
 });
 
 async function addUserPerson(user) {
-  return await db("users").insert(user);
+  const paul = await db("users").insert(user);
+
+  return `New Person Added: ${user.username}`;
 }
 
 //---------------------------------------------------
@@ -131,22 +133,22 @@ function authenticate2(req, res, next) {
 
 //-----------------------------------------------
 
-server.get("/guests", (req, res) => {
-  console.log("starting to get guests");
+server.get("/events", (req, res) => {
+  console.log("starting to get events");
   blah()
-    .then(guest => {
-      res.status(200).json(guest);
+    .then(event => {
+      res.status(200).json(event);
     })
     .catch(err => {
-      res.status(500).json({ error: "The guest could not be retrieved." });
+      res.status(500).json({ error: "The event could not be retrieved." });
     });
 });
 
 function blah() {
-  console.log("totes gonna find an guest");
-  return db("guests").select(
+  console.log("totes gonna find an event");
+  return db("events").select(
     "id",
-    "guestname",
+    "eventname",
     "date",
     "description",
     "location",
@@ -157,8 +159,8 @@ function blah() {
 
 //-----------------------------------------------
 
-server.post("/addguest", authenticate2, (req, res) => {
-  console.log("we gonna try to add an guest");
+server.post("/addevent", authenticate2, (req, res) => {
+  console.log("we gonna try to add an event");
   let post = req.body;
 
   addPost(post)
@@ -172,17 +174,17 @@ server.post("/addguest", authenticate2, (req, res) => {
 
 async function addPost(post) {
   console.log("before");
-  const sally = await db("guests").insert(post);
+  const sally = await db("events").insert(post);
   console.log("after");
-  return `New Post ID: ${post.guestname} : Added :)`;
+  return `New Post ID: ${post.eventname} : Added :)`;
 }
 
 //-----------------------------------------------
 
-server.delete("/deleteguest/:id", authenticate2, (rec, rez) => {
+server.delete("/deleteevent/:id", authenticate2, (rec, rez) => {
   let thingtodie = rec.params.id;
 
-  db("guests")
+  db("events")
     .where({ id: thingtodie })
     .del()
     .then(itsdead => {
@@ -203,15 +205,15 @@ server.delete("/deleteguest/:id", authenticate2, (rec, rez) => {
 
 //-----------------------------------------------
 
-server.put("/updateguest/:id", authenticate2, (reck, rez) => {
+server.put("/updateevent/:id", authenticate2, (reck, rez) => {
   let updoot = reck.params.id;
 
-  db("guests")
+  db("events")
     .where({ id: updoot })
     .update(reck.body)
     .then(newlook => {
       if (newlook > 0) {
-        db("guests")
+        db("events")
           .where({ id: reck.params.id })
           .then(things => {
             rez.status(201).json({ message: "you have successfully updooted" });
