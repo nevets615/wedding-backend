@@ -64,15 +64,15 @@ function token(person) {
   return jwt.sign(payload, secret.jwtSecret, options);
 }
 
-function searchy(x) {
+function search(x) {
   return db("users").where(x);
 }
 
 server.post("/login", (req, res) => {
-  let usernamo = req.body.username;
+  let username = req.body.username;
   let passwordo = req.body.password;
 
-  searchy({ username: usernamo })
+  search({ username: username })
     .first()
     .then(user => {
       if (bcrypt.compareSync(passwordo, user.password)) {
@@ -216,14 +216,14 @@ server.put("/updateguest/:id", authenticate2, (reck, rez) => {
         db("guests")
           .where({ id: reck.params.id })
           .then(things => {
-            rez.status(201).json({ message: "you have successfully updooted" });
+            rez.status(201).json({ message: "you have successfully uploaded" });
           });
       } else {
         rez.status(403).json({ message: "failed to update stuff..." });
       }
     })
-    .catch(errorz => {
-      rez.status(501).json(errorz);
+    .catch(error => {
+      rez.status(501).json(error);
     });
 });
 
