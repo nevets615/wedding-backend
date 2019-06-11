@@ -95,6 +95,8 @@ server.post("/login", (req, res) => {
 //---------------------------------------------
 
 // just a test to see if users are actually logged in and authenticated
+
+
 server.get("/test", authenticate2, (rec, rez) => {
   usersRegis()
     .then(go => {
@@ -132,7 +134,50 @@ function authenticate2(req, res, next) {
 }
 
 //-----------------------------------------------
+// function userToBody(user) {
+//   const result = {
+//     ...user,
+//     completed: intToBoolean(user.completed),
+//   };
+//   function guestToBody(guest) {
+//     return {
+//       ...guest,
+//       completed: intToBoolean(guest.completed),
+//     };
+//   }
 
+//   if (user.guests) {
+//     result.guests = user.guests.map(guest => ({
+//       ...guest,
+//       completed: intToBoolean(guest.completed),
+//     }));
+//   }
+
+//   return result;
+// }
+// function getUserGuests(UserId) {
+//   return db('guests')
+//     .where('User_id', UserId)
+//     .then(guests => guests.map(guest => mappers.guestToBody(guest)));
+// }
+
+// server.get("/guests/usersId", (req, res) => {
+//   console.log(req.params.guestId);
+//   db.getUserActions(req.params.guestId)
+//     .then(guest => {
+//       console.log(guest);
+//       if (guest) {
+//         res.status(200).json(guest);
+//       } else {
+//         res
+//           .status(404)
+//           .json({ error: "The guest with the specified ID does not exist." });
+//       }
+//     })
+//     .catch(err => {
+//       res.status(500).json({ error: "there was an error" });
+//     });
+// });
 server.get("/guests", (req, res) => {
   console.log("starting to get guests");
   retrieve()
@@ -176,7 +221,7 @@ async function addPost(post) {
   console.log("before");
   const sally = await db("guests").insert(post);
   console.log("after");
-  return `New Post ID: ${post.names} : Added :)`;
+  return `New Post ID: ${post.name} : Added :)`;
 }
 
 //-----------------------------------------------
