@@ -205,7 +205,7 @@ function retrieve() {
 //-----------------------------------------------
 
 server.post("/addguest", authenticate2, (req, res) => {
-  console.log("req.body");
+  console.log("we gonna try to add an guest");
   let post = req.body;
 
   addPost(post)
@@ -213,7 +213,7 @@ server.post("/addguest", authenticate2, (req, res) => {
       res.status(201).json(saved);
     })
     .catch(error => {
-      res.status(503).json({ message: `Something is wrong... somewhere...${error}` });
+      res.status(503).json({ message: "Something is wrong... somewhere..." });
     });
 });
 
@@ -221,7 +221,7 @@ async function addPost(post) {
   console.log("before");
   const sally = await db("guests").insert(post);
   console.log("after");
-  return `New Post ID: ${post.name} : Added :)`;
+  return `New Post ID: ${post.guestname} : Added :)`;
 }
 
 //-----------------------------------------------
