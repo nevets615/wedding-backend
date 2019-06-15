@@ -221,7 +221,7 @@ async function addPost(post) {
   console.log("before");
   const sally = await db("guests").insert(post);
   console.log("after");
-  return `New Post ID: ${post.name} : Added :)`;
+  return `New Post ID: ${post.names} : Added :)`;
 }
 
 //-----------------------------------------------
