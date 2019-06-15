@@ -178,29 +178,20 @@ function usersRegis() {
 //       res.status(500).json({ error: "there was an error" });
 //     });
 // });
-server.get("/guests", (req, res) => {
-  console.log("starting to get guests");
-  retrieve()
-    .then(guest => {
-      res.status(200).json(guest);
-    })
-    .catch(err => {
-      res.status(500).json({ error: "The guest could not be retrieved." });
-    });
-});
-
-function retrieve() {
-  console.log("find guest");
-  return db("guests").select(
-    "id",
-    "names",
-    "email",
-    "phone_number",
-    "number_of_guests",
-    "number_of_rooms",
-    "dates_staying"
-  );
+function get() {
+  return db("guests")
 }
+server.get("/guests", (req, res) => {
+  try {
+    let result = await guests.get();
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+  
+
+
 
 //-----------------------------------------------
 
