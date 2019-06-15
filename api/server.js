@@ -82,7 +82,7 @@ server.post("/login", (req, res) => {
           .status(202)
           .json({ message: `Welcome ${user.username} !`, tokenThing });
       } else {
-        res.status(402).json({ message: "Invalid info given" });
+        res.status(402).json({ message: "Invalid info give" });
       }
     })
     .catch(error => {
@@ -130,51 +130,7 @@ function authenticate2(req, res, next) {
   }
 }
 
-//-----------------------------------------------
-// function userToBody(user) {
-//   const result = {
-//     ...user,
-//     completed: intToBoolean(user.completed),
-//   };
-//   function guestToBody(guest) {
-//     return {
-//       ...guest,
-//       completed: intToBoolean(guest.completed),
-//     };
-//   }
 
-//   if (user.guests) {
-//     result.guests = user.guests.map(guest => ({
-//       ...guest,
-//       completed: intToBoolean(guest.completed),
-//     }));
-//   }
-
-//   return result;
-// }
-// function getUserGuests(UserId) {
-//   return db('guests')
-//     .where('User_id', UserId)
-//     .then(guests => guests.map(guest => mappers.guestToBody(guest)));
-// }
-
-// server.get("/guests/usersId", (req, res) => {
-//   console.log(req.params.guestId);
-//   db.getUserActions(req.params.guestId)
-//     .then(guest => {
-//       console.log(guest);
-//       if (guest) {
-//         res.status(200).json(guest);
-//       } else {
-//         res
-//           .status(404)
-//           .json({ error: "The guest with the specified ID does not exist." });
-//       }
-//     })
-//     .catch(err => {
-//       res.status(500).json({ error: "there was an error" });
-//     });
-// });
 server.get("/guests", authenticate2, (req, res) => {
   console.log("starting to get guests");
   retrieve()
