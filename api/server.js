@@ -96,8 +96,7 @@ server.post("/login", (req, res) => {
 
 // just a test to see if users are actually logged in and authenticated
 
-
-server.get("/test", (rec, rez) => {
+server.get("/test", authenticate2, (rec, rez) => {
   usersRegis()
     .then(go => {
       rez.send(go);
@@ -111,27 +110,25 @@ function usersRegis() {
   return db("users").select("username", "password");
 }
 
-//-----------------------------------------------
+function authenticate2(req, res, next) {
+  const token = req.get("Authorization");
 
-// function authenticate2(req, res, next) {
-//   const token = req.get("Authorization");
+  if (token) {
+    jwt.verify(token, secret.jwtSecret, (err, decoded) => {
+      if (err) {
+        return res.status(402).json(err);
+      } else {
+        req.decoded = decoded;
 
-//   if (token) {
-//     jwt.verify(token, secret.jwtSecret, (err, decoded) => {
-//       if (err) {
-//         return res.status(402).json(err);
-//       } else {
-//         req.decoded = decoded;
-
-//         next();
-//       }
-//     });
-//   } else {
-//     return res.status(403).json({
-//       error: "No Token Provided, must be in Authorization header on request"
-//     });
-//   }
-// }
+        next();
+      }
+    });
+  } else {
+    return res.status(403).json({
+      error: "No Token Provided, must be in Authorization header on request"
+    });
+  }
+}
 
 //-----------------------------------------------
 // function userToBody(user) {
@@ -178,24 +175,33 @@ function usersRegis() {
 //       res.status(500).json({ error: "there was an error" });
 //     });
 // });
-server.get("/guests", async (req, res) => {
-  function get() {
-    return db("guests")
-  }
-  try {
-    let result = await guests.get();
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).json(err);
-  }
+server.get("/guests", authenticate2, (req, res) => {
+  console.log("starting to get guests");
+  retrieve()
+    .then(guest => {
+      res.status(200).json(guest);
+    })
+    .catch(err => {
+      res.status(500).json({ error: "The guest could not be retrieved." });
+    });
 });
-  
 
-
+function retrieve() {
+  console.log("find guest");
+  return db("guests").select(
+    "id",
+    "names",
+    "email",
+    "phone_number",
+    "number_of_guests",
+    "number_of_rooms",
+    "dates_staying"
+  );
+}
 
 //-----------------------------------------------
 
-server.post("/addguest", (req, res) => {
+server.post("/addguest", authenticate2, (req, res) => {
   console.log("we gonna try to add an guest");
   let post = req.body;
 
@@ -217,7 +223,7 @@ async function addPost(post) {
 
 //-----------------------------------------------
 
-server.delete("/deleteguest/:id", (rec, rez) => {
+server.delete("/deleteguest/:id", authenticate2, (rec, rez) => {
   let deleted = rec.params.id;
 
   db("guests")
@@ -241,7 +247,7 @@ server.delete("/deleteguest/:id", (rec, rez) => {
 
 //-----------------------------------------------
 
-server.put("/updateguest/:id", (reck, rez) => {
+server.put("/updateguest/:id", authenticate2, (reck, rez) => {
   let updoot = reck.params.id;
 
   db("guests")
