@@ -97,7 +97,7 @@ server.post("/login", (req, res) => {
 // just a test to see if users are actually logged in and authenticated
 
 
-server.get("/test", authenticate2, (rec, rez) => {
+server.get("/test", (rec, rez) => {
   usersRegis()
     .then(go => {
       rez.send(go);
@@ -178,10 +178,10 @@ function usersRegis() {
 //       res.status(500).json({ error: "there was an error" });
 //     });
 // });
-function get() {
-  return db("guests")
-}
-server.get("/guests", (req, res) => {
+server.get("/guests", async (req, res) => {
+  function get() {
+    return db("guests")
+  }
   try {
     let result = await guests.get();
     res.status(200).json(result);
