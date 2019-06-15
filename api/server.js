@@ -182,7 +182,7 @@ server.get("/guests", authenticate2, (req, res) => {
       res.status(200).json(guest);
     })
     .catch(err => {
-      res.status(500).json({ error: "The guest could not be retrieved." });
+      res.status(500).json({ error: {error} });
     });
 });
 
