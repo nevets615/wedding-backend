@@ -80,7 +80,7 @@ server.post("/login", (req, res) => {
 
         res
           .status(202)
-          .json({ message: `Welcome ${user.username} !`, tokenThing });
+          .json({ message: `Welcome ${user.username} !`, tokenThing, user: user.id });
       } else {
         res.status(402).json({ message: "Invalid info give" });
       }
@@ -132,7 +132,7 @@ function authenticate2(req, res, next) {
 
 
 server.get("/guests", authenticate2, (req, res) => {
-  console.log("starting to get guests");
+  console.log("starting to get g");
   retrieve()
     .then(guest => {
       res.status(200).json(guest);
@@ -166,7 +166,7 @@ server.post("/addguest", authenticate2, (req, res) => {
       res.status(201).json(saved);
     })
     .catch(error => {
-      res.status(503).json({ message: "Something is wrong... somewhere..." });
+      res.status(503).json({ message: {error} });
     });
 });
 
