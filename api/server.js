@@ -113,25 +113,25 @@ function usersRegis() {
 
 //-----------------------------------------------
 
-function authenticate2(req, res, next) {
-  const token = req.get("Authorization");
+// function authenticate2(req, res, next) {
+//   const token = req.get("Authorization");
 
-  if (token) {
-    jwt.verify(token, secret.jwtSecret, (err, decoded) => {
-      if (err) {
-        return res.status(402).json(err);
-      } else {
-        req.decoded = decoded;
+//   if (token) {
+//     jwt.verify(token, secret.jwtSecret, (err, decoded) => {
+//       if (err) {
+//         return res.status(402).json(err);
+//       } else {
+//         req.decoded = decoded;
 
-        next();
-      }
-    });
-  } else {
-    return res.status(403).json({
-      error: "No Token Provided, must be in Authorization header on request"
-    });
-  }
-}
+//         next();
+//       }
+//     });
+//   } else {
+//     return res.status(403).json({
+//       error: "No Token Provided, must be in Authorization header on request"
+//     });
+//   }
+// }
 
 //-----------------------------------------------
 // function userToBody(user) {
@@ -204,7 +204,7 @@ function retrieve() {
 
 //-----------------------------------------------
 
-server.post("/addguest", authenticate2, (req, res) => {
+server.post("/addguest", (req, res) => {
   console.log("we gonna try to add an guest");
   let post = req.body;
 
@@ -221,12 +221,12 @@ async function addPost(post) {
   console.log("before");
   const sally = await db("guests").insert(post);
   console.log("after");
-  return `New Post ID: ${post.guestname} : Added :)`;
+  return `New Post ID: ${post.name} : Added :)`;
 }
 
 //-----------------------------------------------
 
-server.delete("/deleteguest/:id", authenticate2, (rec, rez) => {
+server.delete("/deleteguest/:id", (rec, rez) => {
   let deleted = rec.params.id;
 
   db("guests")
@@ -250,7 +250,7 @@ server.delete("/deleteguest/:id", authenticate2, (rec, rez) => {
 
 //-----------------------------------------------
 
-server.put("/updateguest/:id", authenticate2, (reck, rez) => {
+server.put("/updateguest/:id", (reck, rez) => {
   let updoot = reck.params.id;
 
   db("guests")
