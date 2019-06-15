@@ -80,7 +80,7 @@ server.post("/login", (req, res) => {
 
         res
           .status(202)
-          .json({ message: `Welcome ${user.username} !`, tokenThing, user: user.id });
+          .json({ message: `Welcome ${user.username} !`, tokenThing, payload });
       } else {
         res.status(402).json({ message: "Invalid info give" });
       }
