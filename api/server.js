@@ -80,7 +80,7 @@ server.post("/login", (req, res) => {
 
         res
           .status(202)
-          .json({ message: `Welcome ${user.username} !`, tokenThing, payload });
+          .json({ message: `Welcome ${user.username} !`, tokenThing, id:user.id });
       } else {
         res.status(402).json({ message: "Invalid info give" });
       }
@@ -166,7 +166,7 @@ server.post("/addguest", authenticate2, (req, res) => {
       res.status(201).json(saved);
     })
     .catch(error => {
-      res.status(503).json({ message: {error} });
+      res.status(503).json({ message: "Something is wrong... somewhere..." });
     });
 });
 
