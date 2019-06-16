@@ -176,7 +176,7 @@ server.get("/guests/users/:usersId", authenticate2, (req, res) => {
 
 //-----------------------------------------------
 
-server.post("/addguest", (req, res) => {
+server.post("/addguest", authenticate2, (req, res) => {
   console.log("we gonna try to add an guest");
   let post = req.body;
 
@@ -197,7 +197,7 @@ async function addPost(post) {
   try {
    await db("guests").insert(post);
   } catch (e) {
-    console.log("shits not working");
+   
     console.log(e);
   }
  
@@ -218,7 +218,7 @@ server.delete("/deleteguest/:id", authenticate2, (rec, rez) => {
         rez.send("Nope... that does not exist...");
       } else {
         rez
-          .status(402)
+          .status(200)
           .json({ message: "Yup, you killed it. It is not here anymore!" });
       }
     })
