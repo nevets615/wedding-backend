@@ -78,13 +78,11 @@ server.post("/login", (req, res) => {
       if (bcrypt.compareSync(passwordo, user.password)) {
         let tokenThing = token(user);
 
-        res
-          .status(202)
-          .json({
-            message: `Welcome ${user.username} !`,
-            tokenThing,
-            id: user.id
-          });
+        res.status(202).json({
+          message: `Welcome ${user.username} !`,
+          tokenThing,
+          id: user.id
+        });
       } else {
         res.status(402).json({ message: "Invalid info give" });
       }
@@ -159,7 +157,8 @@ function retrieve() {
 }
 server.get("/guests/users/:usersId", authenticate2, (req, res) => {
   console.log(req.params.userId);
-  datab.getUsersGuests(req.params.userId)
+  datab
+    .getUsersGuests(req.params.userId)
     .then(users => {
       console.log(user);
       if (users) {
@@ -175,27 +174,26 @@ server.get("/guests/users/:usersId", authenticate2, (req, res) => {
     });
 });
 
-
 //-----------------------------------------------
 
-server.post("/addguest", authenticate2, (req, res) => {
+server.post("/addguest", (req, res) => {
   console.log("we gonna try to add an guest");
   let post = req.body;
 
   addPost(post)
     .then(saved => {
       res.status(201).json(saved);
-      
     })
     .catch(error => {
       res.status(503).json({ message: error });
+      console.log(error);
     });
 });
 
 async function addPost(post) {
   console.log("before");
-  
-  const sally = await db("guests").insert(post);
+
+  // const sally = await db("guests").insert(post);
   console.log("after");
   return `New Post ID: ${post.names} : Added :)`;
 }
