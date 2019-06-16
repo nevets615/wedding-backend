@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
-
+const datab = require("./userModel");
 const secret = require("./secrets");
 
 const server = express();
@@ -80,7 +80,11 @@ server.post("/login", (req, res) => {
 
         res
           .status(202)
-          .json({ message: `Welcome ${user.username} !`, tokenThing, id:user.id });
+          .json({
+            message: `Welcome ${user.username} !`,
+            tokenThing,
+            id: user.id
+          });
       } else {
         res.status(402).json({ message: "Invalid info give" });
       }
@@ -112,7 +116,7 @@ function usersRegis() {
 
 function authenticate2(req, res, next) {
   const token = req.get("Authorization");
-
+  console.log(token);
   if (token) {
     jwt.verify(token, secret.jwtSecret, (err, decoded) => {
       if (err) {
@@ -130,7 +134,6 @@ function authenticate2(req, res, next) {
   }
 }
 
-
 server.get("/guests", authenticate2, (req, res) => {
   console.log("starting to get g");
   retrieve()
@@ -138,7 +141,7 @@ server.get("/guests", authenticate2, (req, res) => {
       res.status(200).json(guest);
     })
     .catch(err => {
-      res.status(500).json({ error: {error} });
+      res.status(500).json({ error: { error } });
     });
 });
 
@@ -154,6 +157,24 @@ function retrieve() {
     "dates_staying"
   );
 }
+server.get("/guests/users/:usersId", authenticate2, (req, res) => {
+  console.log(req.params.userId);
+  datab.getUsersGuests(req.params.userId)
+    .then(users => {
+      console.log(user);
+      if (users) {
+        res.status(200).json(users);
+      } else {
+        res
+          .status(404)
+          .json({ error: "The user with the specified ID does not exist." });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ error: "there was an error" });
+    });
+});
+
 
 //-----------------------------------------------
 

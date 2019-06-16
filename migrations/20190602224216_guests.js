@@ -1,7 +1,14 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable("guests", tbl => {
     tbl.increments();
-
+    tbl
+    .integer('user_id')
+    .unsigned()
+    .notNullable()
+    .references('id')
+    .inTable('users')
+    .onDelete('CASCADE')
+    .onUpdate('CASCADE');
     tbl
       .string("names", 255)
       .notNullable()
