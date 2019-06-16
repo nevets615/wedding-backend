@@ -192,8 +192,15 @@ server.post("/addguest", (req, res) => {
 
 async function addPost(post) {
   console.log("before");
+  console.log(post);
 
-  // const sally = await db("guests").insert(post);
+  try {
+    const sally = await db("guests").insert(post);
+  } catch (e) {
+    console.log("shits not working");
+    console.log(e);
+  }
+  console.log(sally);
   console.log("after");
   return `New Post ID: ${post.names} : Added :)`;
 }
