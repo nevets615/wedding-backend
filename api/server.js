@@ -152,7 +152,8 @@ function retrieve() {
     "phone_number",
     "number_of_guests",
     "number_of_rooms",
-    "dates_staying"
+    "dates_staying",
+    "user_id"
   );
 }
 server.get("/guests/users/:usersId", authenticate2, (req, res) => {
