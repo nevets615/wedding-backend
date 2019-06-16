@@ -195,12 +195,12 @@ async function addPost(post) {
   console.log(post);
 
   try {
-    const sally = await db("guests").insert(post);
+   await db("guests").insert(post);
   } catch (e) {
     console.log("shits not working");
     console.log(e);
   }
-  console.log(sally);
+ 
   console.log("after");
   return `New Post ID: ${post.names} : Added :)`;
 }
