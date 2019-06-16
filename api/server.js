@@ -185,14 +185,16 @@ server.post("/addguest", authenticate2, (req, res) => {
   addPost(post)
     .then(saved => {
       res.status(201).json(saved);
+      
     })
     .catch(error => {
-      res.status(503).json({ message: "Something is wrong... somewhere..." });
+      res.status(503).json({ message: error });
     });
 });
 
 async function addPost(post) {
   console.log("before");
+  
   const sally = await db("guests").insert(post);
   console.log("after");
   return `New Post ID: ${post.names} : Added :)`;
