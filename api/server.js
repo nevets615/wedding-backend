@@ -96,6 +96,75 @@ server.post("/login", (req, res) => {
 
 //---------------------------------------------
 
+server.post("/registerAdmin", (req, res) => {
+  let userInfo = req.body;
+  const hash = bcrypt.hashSync(userInfo.password, 12);
+  userInfo.password = hash;
+
+  addUserAdmin(userInfo)
+    .then(saved => {
+      res.status(201).json(saved);
+      console.log(userInfo.username);
+      console.log(userInfo.password);
+    })
+    .catch(error => {
+      res.status(501).json({ message: `Registration Error!!! ${error}` });
+    });
+});
+
+async function addUserAdmin(user) {
+  const paul = await db("userAdmin").insert(user);
+
+  return `New Person Added: ${user.username}`;
+}
+
+//---------------------------------------------------
+
+function token(person) {
+  console.log("getting a token is starting");
+  const payload = {
+    subject: person.id,
+    username: person.username
+  };
+  const options = {
+    expiresIn: "1d"
+  };
+  console.log("we got the token");
+
+  return jwt.sign(payload, secret.jwtSecret, options);
+}
+
+function searchs(x) {
+  return db("userAdmin").where(x);
+}
+
+server.post("/loginAdmin", (req, res) => {
+  let username = req.body.username;
+  let password = req.body.password;
+
+  searchs({ username: username })
+    .first()
+    .then(user => {
+      if (bcrypt.compareSync(password, user.password)) {
+        let tokenThing = token(user);
+
+        res.status(202).json({
+          message: `Welcome ${user.username} !`,
+          tokenThing,
+          id: user.id
+        });
+      } else {
+        res.status(402).json({ message: "Invalid info give" });
+      }
+    })
+    .catch(error => {
+      res.status(501).json({
+        message: "there is a problum"
+      });
+    });
+});
+//---------------------------------------------
+
 // just a test to see if users are actually logged in and authenticated
 
 server.get("/test", authenticate2, (rec, rez) => {
